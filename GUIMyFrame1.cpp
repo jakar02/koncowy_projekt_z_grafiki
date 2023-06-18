@@ -157,7 +157,6 @@ void GUIMyFrame1::m_button_animateOnButtonClick(wxCommandEvent& event)
 	{
 		rotationX = 0, rotationY = 0, rotationZ = 0;
 		translationX = 0, translationY = 0, translationZ = 0;
-		scaleX = 1.0, scaleY = 1.0, scaleZ = 1.0;
 		timer = 0;
 		m_slider_rotationX->SetValue(0), m_staticText_rotationX_value->SetLabel(std::to_string(m_slider_rotationX->GetValue()));
 		m_slider_rotationY->SetValue(0), m_staticText_rotationY_value->SetLabel(std::to_string(m_slider_rotationY->GetValue()));
