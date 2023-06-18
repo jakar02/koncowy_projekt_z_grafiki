@@ -9,7 +9,6 @@ MyFrame1( parent )
 
 void GUIMyFrame1::m_button_loadfileOnButtonClick(wxCommandEvent& event)
 {
-	// TODO: Implement m_button_loadfileOnButtonClick
 	wxFileDialog Open_File_Dialog(this, wxT("Wybierz plik"), wxT(""), wxT(""), wxT("Plik tekstowy (*.txt)|*.txt"), wxFD_OPEN | wxFD_FILE_MUST_EXIST);
 	if (Open_File_Dialog.ShowModal() == wxID_OK)
 	{
@@ -19,18 +18,18 @@ void GUIMyFrame1::m_button_loadfileOnButtonClick(wxCommandEvent& event)
 			lines.clear();
 			spheres.clear();
 			int flag = 0;
-			double a = 0, b = 0, c = 0, d = 0, e = 0, f = 0;
+			double x1 = 0, y1 = 0, z1 = 0, x2 = 0, y2 = 0, z2 = 0, r = 0, t = 0;
 			file >> object_num;
 			while (!file.eof() && (lines.size() + spheres.size()) < object_num) {
 				file >> flag;
 				if (flag == 1) {
-					file >> a >> b >> c >> d >> e >> f;
-					lines.push_back(Line(a, b, c, d, e, f));
+					file >> x1 >> y1 >> z1 >> x2 >> y2 >> z2 >> t;
+					lines.push_back(Line(x1, y1, z1, x2, y2, z2, t));
 					file.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 				}
 				else {
-					file >> a >> b >> c >> d;
-					spheres.push_back(Sphere(a, b, c, d));
+					file >> x1 >> y1 >> z1 >> r >> t;
+					spheres.push_back(Sphere(x1, y1, z1, r, t));
 					file.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 				}
 			}
@@ -42,22 +41,24 @@ void GUIMyFrame1::m_button_loadfileOnButtonClick(wxCommandEvent& event)
 
 void GUIMyFrame1::m_button_savefileOnButtonClick(wxCommandEvent& event)
 {
-	// TODO: Implement m_button_savefileOnButtonClick
-	wxFileDialog Save_File_Dialog(this, "Wybierz plik", "", "", "Pliki obrazow (*.png;*.bmp;*.jpg)|*.png;*.bmp;*.jpg", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
-	if (Save_File_Dialog.ShowModal() == wxID_OK)
+	wxFileDialog save_file_dialog(this, "Wybierz plik", "", "", "Pliki obrazow (*.png;*.bmp;*.jpg)|*.png;*.bmp;*.jpg", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+	if (save_file_dialog.ShowModal() == wxID_OK)
 	{
+		wxNumberEntryDialog x_number_dialog(this,"Wprowadz szerokosc obrazu","Szerokosc :","Rozmiar obrazu",800,40,2000);
+		wxNumberEntryDialog y_number_dialog(this, "Wprowadz wysokosc obrazu", "Wysokosc :", "Rozmiar obrazu", 600, 30, 1500);
+		x_number_dialog.ShowModal();
+		y_number_dialog.ShowModal();
 		wxImage image_to_save = to_save.ConvertToImage();
-		image_to_save.Rescale(800, 600);
+		image_to_save.Rescale(x_number_dialog.GetValue(), y_number_dialog.GetValue());
 		image_to_save.AddHandler(new wxJPEGHandler);
 		image_to_save.AddHandler(new wxBMPHandler);
 		image_to_save.AddHandler(new wxPNGHandler);
-		image_to_save.SaveFile(Save_File_Dialog.GetPath());
+		image_to_save.SaveFile(save_file_dialog.GetPath());
 	}
 }
 
 void GUIMyFrame1::m_slider_rotationXOnScroll(wxScrollEvent& event)
 {
-	// TODO: Implement m_slider_rotationXOnScroll
 	rotationX = m_slider_rotationX->GetValue() / 180.0 * M_PI;
 	m_staticText_rotationX_value->SetLabel(std::to_string(m_slider_rotationX->GetValue()));
 	Repaint();
@@ -65,7 +66,6 @@ void GUIMyFrame1::m_slider_rotationXOnScroll(wxScrollEvent& event)
 
 void GUIMyFrame1::m_slider_rotationYOnScroll(wxScrollEvent& event)
 {
-	// TODO: Implement m_slider_rotationYOnScroll
 	rotationY = m_slider_rotationY->GetValue() / 180.0 * M_PI;
 	m_staticText_rotationY_value->SetLabel(std::to_string(m_slider_rotationY->GetValue()));
 	Repaint();
@@ -73,7 +73,6 @@ void GUIMyFrame1::m_slider_rotationYOnScroll(wxScrollEvent& event)
 
 void GUIMyFrame1::m_slider_rotationZOnScroll(wxScrollEvent& event)
 {
-	// TODO: Implement m_slider_rotationZOnScroll
 	rotationZ = m_slider_rotationZ->GetValue() / 180.0 * M_PI;
 	m_staticText_rotationZ_value->SetLabel(std::to_string(m_slider_rotationZ->GetValue()));
 	Repaint();
@@ -81,7 +80,6 @@ void GUIMyFrame1::m_slider_rotationZOnScroll(wxScrollEvent& event)
 
 void GUIMyFrame1::m_slider_translationXOnScroll(wxScrollEvent& event)
 {
-	// TODO: Implement m_slider_translationXOnScroll
 	translationX = m_slider_translationX->GetValue() / 100.0;
 	m_staticText_translationX_value->SetLabel(std::to_string(translationX).substr(0, std::to_string(translationX).find(".") + 3));
 	Repaint();
@@ -89,7 +87,6 @@ void GUIMyFrame1::m_slider_translationXOnScroll(wxScrollEvent& event)
 
 void GUIMyFrame1::m_slider_translationYOnScroll(wxScrollEvent& event)
 {
-	// TODO: Implement m_slider_translationYOnScroll
 	translationY = m_slider_translationY->GetValue() / 100.0;
 	m_staticText_translationY_value->SetLabel(std::to_string(translationY).substr(0, std::to_string(translationY).find(".") + 3));
 	Repaint();
@@ -97,7 +94,6 @@ void GUIMyFrame1::m_slider_translationYOnScroll(wxScrollEvent& event)
 
 void GUIMyFrame1::m_slider_translationZOnScroll(wxScrollEvent& event)
 {
-	// TODO: Implement m_slider_translationZOnScroll
 	translationZ = m_slider_translationZ->GetValue() / 100.0;
 	m_staticText_translationZ_value->SetLabel(std::to_string(translationZ).substr(0, std::to_string(translationZ).find(".") + 3));
 	Repaint();
@@ -105,7 +101,6 @@ void GUIMyFrame1::m_slider_translationZOnScroll(wxScrollEvent& event)
 
 void GUIMyFrame1::m_slider_scaleXOnScroll(wxScrollEvent& event)
 {
-	// TODO: Implement m_slider_scaleXOnScroll
 	scaleX = m_slider_scaleX->GetValue() / 100.0;
 	m_staticText_scaleX_value->SetLabel(std::to_string(scaleX).substr(0, std::to_string(scaleX).find(".") + 3));
 	Repaint();
@@ -113,7 +108,6 @@ void GUIMyFrame1::m_slider_scaleXOnScroll(wxScrollEvent& event)
 
 void GUIMyFrame1::m_slider_scaleYOnScroll(wxScrollEvent& event)
 {
-	// TODO: Implement m_slider_scaleYOnScroll
 	scaleY = m_slider_scaleY->GetValue() / 100.0;
 	m_staticText_scaleY_value->SetLabel(std::to_string(scaleY).substr(0, std::to_string(scaleY).find(".") + 3));
 	Repaint();
@@ -121,7 +115,6 @@ void GUIMyFrame1::m_slider_scaleYOnScroll(wxScrollEvent& event)
 
 void GUIMyFrame1::m_slider_scaleZOnScroll(wxScrollEvent& event)
 {
-	// TODO: Implement m_slider_scaleZOnScroll
 	scaleZ = m_slider_scaleZ->GetValue() / 100.0;
 	m_staticText_scaleZ_value->SetLabel(std::to_string(scaleZ).substr(0, std::to_string(scaleZ).find(".") + 3));
 	Repaint();
@@ -129,7 +122,6 @@ void GUIMyFrame1::m_slider_scaleZOnScroll(wxScrollEvent& event)
 
 void GUIMyFrame1::m_slider_spacingOnScroll(wxScrollEvent& event)
 {
-	// TODO: Implement m_slider_spacingOnScroll
 	spacing = m_slider_spacing->GetValue() / 10.0;
 	m_staticText_spacing_value->SetLabel(std::to_string(spacing).substr(0, std::to_string(spacing).find(".") + 2));
 	Repaint();
@@ -137,7 +129,6 @@ void GUIMyFrame1::m_slider_spacingOnScroll(wxScrollEvent& event)
 
 void GUIMyFrame1::m_button_color_oneOnButtonClick(wxCommandEvent& event)
 {
-	// TODO: Implement m_button_color_oneOnButtonClick
 	wxColourData c_data;
 	wxColourDialog dlg(this, &c_data);
 	if (dlg.ShowModal() == wxID_OK)
@@ -150,7 +141,6 @@ void GUIMyFrame1::m_button_color_oneOnButtonClick(wxCommandEvent& event)
 
 void GUIMyFrame1::m_button_color_twoOnButtonClick(wxCommandEvent& event)
 {
-	// TODO: Implement m_button_color_twoOnButtonClick
 	wxColourData c_data;
 	wxColourDialog dlg(this, &c_data);
 	if (dlg.ShowModal() == wxID_OK)
@@ -163,7 +153,6 @@ void GUIMyFrame1::m_button_color_twoOnButtonClick(wxCommandEvent& event)
 
 void GUIMyFrame1::m_button_animateOnButtonClick(wxCommandEvent& event)
 {
-	// TODO: Implement m_button_animateOnButtonClick
 	if (!animate)
 	{
 		rotationX = 0, rotationY = 0, rotationZ = 0;
@@ -183,13 +172,11 @@ void GUIMyFrame1::m_button_animateOnButtonClick(wxCommandEvent& event)
 
 void GUIMyFrame1::m_panelOnSize( wxSizeEvent& event )
 {
-// TODO: Implement m_panelOnSize
 	Repaint();
 }
 
 void GUIMyFrame1::m_timerOnTimer( wxTimerEvent& event )
 {
-// TODO: Implement m_timerOnTimer
 	if (animate)
 	{
 		timer = (timer + 1) % 360;
@@ -218,14 +205,14 @@ void GUIMyFrame1::Repaint()
 	Vector begin;
 	Vector end;
 	Matrix transformation_matrix = Matrix_Translation(translationX, translationY, translationZ) * Matrix_RotationX(rotationX) * Matrix_RotationY(rotationY) * Matrix_RotationZ(rotationZ) * Matrix_Scale(scaleX, scaleY, scaleZ);
-	for (auto x : lines) {
+	for (const auto& x : lines) {
 		begin = transformation_matrix * x.begin;
 		end = transformation_matrix * x.end;
 		if (begin(2) <= -3) begin(2) = -2.99; // obciecie tak by bylo widziane, sprawdzic edge-case'y
 		if (end(2) <= -3) end(2) = -2.99; //to samo
-		dc.SetPen(wxPen(color_one));
+		dc.SetPen(wxPen(color_one,x.thickness));
 		dc.DrawLine(point_cast(begin, width, height), point_cast(end, width, height));
-		dc.SetPen(wxPen(color_two));
+		dc.SetPen(wxPen(color_two,x.thickness));
 		dc.DrawLine(point_cast(begin, width, height) + wxPoint(spacing, 0), point_cast(end, width, height) + wxPoint(spacing, 0));
 	}
 }

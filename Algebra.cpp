@@ -13,6 +13,11 @@ double& Matrix::operator()(int x, int y)
 	return data[x][y];
 }
 
+double Matrix::operator()(int x, int y) const
+{
+	return data[x][y];
+}
+
 Vector::Vector()
 {
 	data[0] = 0.0; data[1] = 0.0; data[2] = 0.0; data[3] = 1.0;
@@ -23,7 +28,12 @@ double& Vector::operator()(int x)
 	return data[x];
 }
 
-Matrix operator*(Matrix m1, Matrix m2) 
+double Vector::operator()(int x) const
+{
+	return data[x];
+}
+
+Matrix operator*(const Matrix& m1, const Matrix& m2) 
 {
 	Matrix result;
 	result(3, 3) = 0.0;
@@ -37,7 +47,7 @@ Matrix operator*(Matrix m1, Matrix m2)
 	return result;
 }
 
-Vector operator*(Matrix m, Vector v)
+Vector operator*(const Matrix& m, const Vector& v)
 {
 	Vector result;
 	result(3) = 0.0;
@@ -103,7 +113,7 @@ Matrix Matrix_Scale(double sx, double sy, double sz)
 	return result;
 }
 
-wxPoint point_cast(Vector v, double w, double h) 
+wxPoint point_cast(const Vector& v, double w, double h) 
 {
 	return wxPoint((v(0) / (3.0 + v(2))) * w + w / 2.0, (v(1) / (3.0 + v(2))) * h + h / 2.0); 
 }
